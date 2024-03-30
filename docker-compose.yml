@@ -1,0 +1,58 @@
+version: '3.3'
+
+services:
+    api-core:
+        container_name: api-core
+        build:
+            context: .
+            dockerfile: docker/core/Dockerfile
+        depends_on:
+            - api-db
+        env_file:
+            - ./.env
+        expose:
+            - "${PHP_PORT}"
+        volumes:
+            - ./:/var/www
+            - ./docker/core/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - api
+
+    api-db:
+        image: mysql:5.7
+        container_name: api-db
+        environment:
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+        volumes:
+            - .db-data:/var/lib/mysql
+            - ./docker/core/mysql/init-mysql.js:/docker-entrypoint-initdb.d/init-mysql-js:ro
+        ports:
+            - "${DB_PORT}:${DB_MYSQL_CONTAINER_PORT}"
+        restart: always
+        networks:
+            - api
+
+    api-webserver:
+        image: nginx:1.17
+        container_name: api-webserver
+        restart: unless-stopped
+        ports:
+            - "${CORE_NGINX_PORT}:${CONTAINER_NGINX_PORT}"
+        volumes:
+            - ./:/var/www
+            - ./docker/core/conf.d:/etc/nginx/conf.d
+        links:
+            - api-core
+        depends_on:
+            - api-core
+        networks:
+            api:
+                aliases:
+                    - api.loc
+
+networks:
+    api:
+        driver: bridge
