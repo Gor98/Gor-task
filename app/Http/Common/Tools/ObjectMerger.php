@@ -6,6 +6,8 @@ use Closure;
 
 class ObjectMerger
 {
+    private $context_schema;
+
     public function __construct($context_schema)
     {
         $this->context_schema = $context_schema;

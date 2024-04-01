@@ -19,11 +19,31 @@ cd Gor-task && cp env.example .env
 ```
 docker-compose up
 ```
-### After your docker is ready migrate database
+### Create Telegram bot and put token in .env 
+```
+docker-compose exec app-core /bin/bash
+TELEGRAM_BOT_TOKEN=<YOUR TOKEN>
+```
+### Open ngrok and get webhook url and update webhook url in .env
+```
+docker-compose exec app-core /bin/bash
+http://0.0.0.0:4040/inspect/http
+TELEGRAM_WEBHOOK_URL=<YOUR TOKEN>
+```
 
+### After your docker is ready migrate database
 ```
 docker-compose exec app-core /bin/bash
 php artisan migrate
+```
+### Then run command to create webhook
+```
+php artisan app:create-telegram-webhook
+```
+### You may check webhook status and if see any error may delete and create new one
+```
+php artisan app:telegram-webhook-status
+php artisan app:remove-telegram-webhook
 ```
 ### To run tests
 ```
