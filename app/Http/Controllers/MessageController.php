@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReplyRequest;
 use App\Http\Services\MessageService;
 use App\Http\Services\TelegramService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class MessageController extends Controller
 {
@@ -40,11 +44,23 @@ class MessageController extends Controller
     }
 
     /**
-     *
+     * show messages
      */
     public function save(): void
     {
         $message = $this->telegramService->getMessage();
         $this->messageService->save($message);
+    }
+
+    /**
+     * @param ReplyRequest $request
+     * @return Application|\Illuminate\Foundation\Application|RedirectResponse|Redirector
+     */
+    public function reply(ReplyRequest $request): \Illuminate\Foundation\Application|Redirector|RedirectResponse|Application
+    {
+        $this->messageService->save(array_merge($request->all(), ['sender' => 'app']));
+        $this->telegramService->sendMessage($request);
+
+        return redirect('/');
     }
 }

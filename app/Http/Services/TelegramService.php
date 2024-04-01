@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\Common\Bases\Service;
 use App\Http\Common\Tools\ObjectMerger;
+use App\Http\Requests\ReplyRequest;
 use App\Http\Schemas\MessageSchema;
 use Telegram\Bot\Api;
 
@@ -45,5 +46,13 @@ class TelegramService extends Service
         $objectMerger = new ObjectMerger($schema);
 
         return $objectMerger->merge(reset($newMessage));
+    }
+
+    public function sendMessage(ReplyRequest $request)
+    {
+        $this->telegram->sendMessage([
+            'chat_id' => $request->tele_chat_id,
+            'text' => $request->message,
+        ]);
     }
 }
