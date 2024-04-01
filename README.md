@@ -11,7 +11,7 @@ git clone https://github.com/Gor98/Gor-task.git
 cd Gor-task && cp env.example .env
 ```
 ### Next let docker create environment for you 
-#### our container are
+#### our containers are
 * api-core - workspace where our files located
 * api-db - MySql database
 * api-webserve - nginx webserver
@@ -26,7 +26,6 @@ TELEGRAM_BOT_TOKEN=<YOUR TOKEN>
 ```
 ### Open ngrok and get webhook url and update webhook url in .env
 ```
-docker-compose exec api-core /bin/bash
 http://0.0.0.0:4040/inspect/http
 TELEGRAM_WEBHOOK_URL=<YOUR TOKEN>
 ```
@@ -47,5 +46,15 @@ php artisan app:remove-telegram-webhook
 ```
 ### To run tests
 ```
+docker-compose exec api-core /bin/bash
 php artisan test
 ```
+### Open all permission for storage directory (only for development we do like this)
+```
+sudo chmor -R 777 storage/
+```
+### Web page is available at
+```
+http://0.0.0.0:8080/
+```
+### Then go to your Telegram bot and message something
