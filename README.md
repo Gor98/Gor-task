@@ -12,28 +12,28 @@ cd Gor-task && cp env.example .env
 ```
 ### Next let docker create environment for you 
 #### our container are
-* app-core - workspace where our files located
-* app-db - MySql database
-* app-webserve - nginx webserver
+* api-core - workspace where our files located
+* api-db - MySql database
+* api-webserve - nginx webserver
 * ngrok - socket to make telegram webhook call our app
 ```
 docker-compose up
 ```
 ### Create Telegram bot and put token in .env 
 ```
-docker-compose exec app-core /bin/bash
+docker-compose exec api-core /bin/bash
 TELEGRAM_BOT_TOKEN=<YOUR TOKEN>
 ```
 ### Open ngrok and get webhook url and update webhook url in .env
 ```
-docker-compose exec app-core /bin/bash
+docker-compose exec api-core /bin/bash
 http://0.0.0.0:4040/inspect/http
 TELEGRAM_WEBHOOK_URL=<YOUR TOKEN>
 ```
 
 ### After your docker is ready migrate database
 ```
-docker-compose exec app-core /bin/bash
+docker-compose exec api-core /bin/bash
 php artisan migrate
 ```
 ### Then run command to create webhook
