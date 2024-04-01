@@ -52,7 +52,17 @@ services:
             api:
                 aliases:
                     - api.loc
-
+    ngrok:
+        image: wernight/ngrok
+        depends_on:
+            - api-core
+        environment:
+            - NGROK_AUTHTOKEN=${NGROK_AUTH_TOKEN}
+        ports:
+            - "${NGROK_PORT}:${NGROK_CONTAINER_PORT}"
+        command: ngrok http api-webserver:${CONTAINER_NGINX_PORT}
+        networks:
+            - api
 networks:
     api:
         driver: bridge
