@@ -1,13 +1,13 @@
 version: '3.3'
 
 services:
-    api-core:
-        container_name: api-core
+    app-core:
+        container_name: app-core
         build:
             context: .
             dockerfile: docker/core/Dockerfile
         depends_on:
-            - api-db
+            - app-db
         env_file:
             - ./.env
         expose:
@@ -16,11 +16,11 @@ services:
             - ./:/var/www
             - ./docker/core/php/local.ini:/usr/local/etc/php/conf.d/local.ini
         networks:
-            - api
+            - app
 
-    api-db:
+    app-db:
         image: mysql:5.7
-        container_name: api-db
+        container_name: app-db
         environment:
             - MYSQL_DATABASE=${DB_DATABASE}
             - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
@@ -33,11 +33,11 @@ services:
             - "${DB_PORT}:${DB_MYSQL_CONTAINER_PORT}"
         restart: always
         networks:
-            - api
+            - app
 
-    api-webserver:
+    app-webserver:
         image: nginx:1.17
-        container_name: api-webserver
+        container_name: app-webserver
         restart: unless-stopped
         ports:
             - "${CORE_NGINX_PORT}:${CONTAINER_NGINX_PORT}"
@@ -45,24 +45,24 @@ services:
             - ./:/var/www
             - ./docker/core/conf.d:/etc/nginx/conf.d
         links:
-            - api-core
+            - app-core
         depends_on:
-            - api-core
+            - app-core
         networks:
-            api:
+            app:
                 aliases:
-                    - api.loc
+                    - app.loc
     ngrok:
         image: wernight/ngrok
         depends_on:
-            - api-core
+            - app-core
         environment:
             - NGROK_AUTHTOKEN=${NGROK_AUTH_TOKEN}
         ports:
             - "${NGROK_PORT}:${NGROK_CONTAINER_PORT}"
-        command: ngrok http api-webserver:${CONTAINER_NGINX_PORT}
+        command: ngrok http app-webserver:${CONTAINER_NGINX_PORT}
         networks:
-            - api
+            - app
 networks:
-    api:
+    app:
         driver: bridge
