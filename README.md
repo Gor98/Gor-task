@@ -21,7 +21,6 @@ docker-compose up
 ```
 ### Create Telegram bot and put token in .env 
 ```
-docker-compose exec api-core /bin/bash
 TELEGRAM_BOT_TOKEN=<YOUR TOKEN>
 ```
 ### Open ngrok and get webhook url and update webhook url in .env
@@ -51,10 +50,12 @@ php artisan test
 ```
 ### Open all permission for storage directory (only for development we do like this)
 ```
-sudo chmor -R 777 storage/
+sudo chmod -R 777 storage/
 ```
 ### Web page is available at
 ```
 http://0.0.0.0:8080/
 ```
-### Then go to your Telegram bot and message something
+### Then go to your Telegram bot and message something then refresh web page
+
+### If needed to reinstall docker images make sure you deleted .db-data
