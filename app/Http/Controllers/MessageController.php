@@ -34,10 +34,9 @@ class MessageController extends Controller
      */
     public function show()
     {
-        $this->telegramService->getUpdates();
-        // TODO return messages to front
-        $this->messageService->all();
-        return ;
+        $messages = $this->messageService->all();
+
+        return view('messages', ['messages' => $messages]);
     }
 
     /**

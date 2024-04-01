@@ -2,10 +2,7 @@
 
 namespace App\Http\Common\Tools;
 
-use App\Exceptions\InternalErrorException;
 use Closure;
-use Log;
-use Throwable;
 
 class ObjectMerger
 {

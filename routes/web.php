@@ -4,21 +4,20 @@ use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
-Route::get('/', function () {
+Route::get('/send', function () {
 
     info('ggg');
-    $response = Telegram::bot('mybot')->getMe();
 
 
     Telegram::sendMessage([
         'chat_id' => 1781663510,
         'text' => 'sssss',
     ]);
-dd($response);
+dd(2);
     return view('welcome');
 });
 
-Route::get('/get', [MessageController::class, 'show']);
+Route::get('/', [MessageController::class, 'show']);
 Route::post('/webhook', [MessageController::class, 'save']);
 
 Route::get('/set-webhook', function () {
@@ -37,13 +36,16 @@ Route::get('/set-webhook', function () {
 });
 
 
-Route::post('/', function () {
-    info('1111111111111111', ['ss' =>request()->all()]);
-//    $response = Telegram::removeWebhook();
-
-    $updates = Telegram::getWebhookUpdate();
-
-    info('--------------', [
-        'sss' =>  $updates->getStatus()
-    ]);
-});
+//Route::get('/', function () {
+////    info('1111111111111111', ['ss' =>request()->all()]);
+//////    $response = Telegram::removeWebhook();
+////
+////    $updates = Telegram::getWebhookUpdate();
+////
+////    info('--------------', [
+////        'sss' =>  $updates->getStatus()
+////    ]);
+//    $messages = [];
+//    return view('messages', ['messages' => $messages]);
+//
+//});

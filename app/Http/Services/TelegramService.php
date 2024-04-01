@@ -4,10 +4,8 @@ namespace App\Http\Services;
 
 use App\Http\Common\Bases\Service;
 use App\Http\Common\Tools\ObjectMerger;
-use App\Http\Repositories\MessageRepository;
 use App\Http\Schemas\MessageSchema;
 use Telegram\Bot\Api;
-use Telegram\Bot\Exceptions\TelegramSDKException;
 
 
 class TelegramService extends Service
@@ -45,6 +43,7 @@ class TelegramService extends Service
         $schema = new MessageSchema();
         $schema = $schema->get();
         $objectMerger = new ObjectMerger($schema);
+
         return $objectMerger->merge(reset($newMessage));
     }
 }
