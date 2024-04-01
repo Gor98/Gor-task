@@ -19,6 +19,8 @@ class MessageRepository extends Repository
     protected array $fillable = [
         'sender',
         'message',
+        'tele_message_id',
+        'tele_chat_id',
         'parent_id'
     ];
 

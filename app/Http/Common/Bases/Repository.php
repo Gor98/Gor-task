@@ -81,4 +81,39 @@ abstract class Repository
     {
         return $this->query()->with($relations)->get($columns);
     }
+
+    /**
+     * Save values in table.
+     *
+     * @param array $data
+     * @param array $fillable
+     * @return mixed
+     * @throws RepositoryException
+     */
+    public function create(array $data, array $fillable = []): Model
+    {
+        $object = $this->fill($data, $this->makeModel(), $fillable);
+        $object->save();
+
+        return $object->fresh();
+    }
+
+    /**
+     * @param array $data
+     * @param Model $model
+     * @param array $fillable
+     * @return Model
+     */
+    public function fill(array $data, Model $model, array $fillable = []): Model
+    {
+        if (empty($fillable)) {
+            $fillable = $this->fillable;
+        }
+
+        if (!empty($fillable)) {
+            $model->fillable($fillable)->fill($data);
+        }
+
+        return $model;
+    }
 }

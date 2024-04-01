@@ -59,4 +59,9 @@ class MessageService extends Service
 
         return $this->eagerLoadNestedMessages($topLevelMessages);
     }
+
+    public function save($message)
+    {
+        return $this->messageRepository->create($message);
+    }
 }
