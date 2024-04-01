@@ -7,6 +7,7 @@ use App\Http\Common\Tools\ObjectMerger;
 use App\Http\Requests\ReplyRequest;
 use App\Http\Schemas\MessageSchema;
 use Telegram\Bot\Api;
+use Telegram\Bot\Exceptions\TelegramSDKException;
 
 
 class TelegramService extends Service
@@ -48,6 +49,9 @@ class TelegramService extends Service
         return $objectMerger->merge(reset($newMessage));
     }
 
+    /**
+     * @throws TelegramSDKException
+     */
     public function sendMessage(ReplyRequest $request)
     {
         $this->telegram->sendMessage([
